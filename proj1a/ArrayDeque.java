@@ -13,8 +13,8 @@ public class ArrayDeque<T> {
 
     public ArrayDeque(ArrayDeque other) {
         size = other.size;
-        items = (T[]) new Object[other.size];
-        System.arraycopy(other.items, 0, items, 0, size);
+        items = (T[]) new Object[other.items.length];
+        System.arraycopy(other.items, 0, items, 0, other.items.length);
         nextFirst = other.nextFirst;
         nextLast = other.nextLast;
     }
@@ -32,8 +32,8 @@ public class ArrayDeque<T> {
     }
 
     private void userFactorAdjust() {
-        if ((size < items.length * 0.25) && (items.length >= 16)) {
-            resize(4 * size);
+        if ((size < items.length / 4) && (items.length >= 16)) {
+            resize(items.length / 2);
         }
     }
 
@@ -89,25 +89,34 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        size -= 1;
-        T first = items[plusIndex(nextFirst)];
-        items[plusIndex(nextFirst)] = null;
-        nextFirst = plusIndex(nextFirst);
+        T toRemove = items[plusIndex(nextFirst)];
+        if (!isEmpty()) {
+            size -= 1;
+            items[plusIndex(nextFirst)] = null;
+            nextFirst = plusIndex(nextFirst);
+        }
         userFactorAdjust();
-        return first;
+        return toRemove;
     }
 
     public T removeLast() {
-        size -= 1;
-        T last = items[minusIndex(nextLast)];
-        items[minusIndex(nextLast)] = null;
-        nextLast = minusIndex(nextLast);
+        T toRemove = items[minusIndex(nextLast)];
+        if (!isEmpty()) {
+            size -= 1;
+            items[minusIndex(nextLast)] = null;
+            nextLast = minusIndex(nextLast);
+        }
         userFactorAdjust();
-        return last;
+        return toRemove;
     }
 
     public T get(int index) {
-        return items[index];
+        if (index>=size){
+            return null;
+        } else {
+            int position = nextFirst+index+1;
+            return items[position % items.length];
+        }
     }
 
 //    public static void main(String args[]){
