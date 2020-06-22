@@ -20,7 +20,7 @@ public class TestPalindrome {
     public void testisPalindrome() {
         assertFalse(palindrome.isPalindrome("cat"));
         assertTrue(palindrome.isPalindrome(""));
-        assertTrue(palindrome.isPalindrome("Cac"));
+        assertFalse(palindrome.isPalindrome("Cac"));
         assertTrue(palindrome.isPalindrome("c"));
         assertTrue(palindrome.isPalindrome("refer"));
         assertTrue(palindrome.isPalindrome("noon"));
@@ -30,8 +30,9 @@ public class TestPalindrome {
     public void testIsPalindromeOffByOne() {
         OffByOne cc = new OffByOne();
         assertTrue(palindrome.isPalindrome("", cc));
-        assertTrue(palindrome.isPalindrome("Flake", cc));
-        assertTrue(palindrome.isPalindrome("Zyzy", cc));
+        assertTrue(palindrome.isPalindrome("flake", cc));
+        assertFalse(palindrome.isPalindrome("Flake", cc));
+        assertFalse(palindrome.isPalindrome("Zyzy", cc));
         assertFalse(palindrome.isPalindrome("Xyz", cc));
         assertFalse(palindrome.isPalindrome("noon", cc));
     }
