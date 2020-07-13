@@ -38,7 +38,7 @@ public class ULLMap<K, V>  implements Map61B<K, V> {
         if (list != null) {
             Entry lookup = list.get(key);
             if (lookup == null) {
-                list = new Entry(key, val, list);
+                list = new Entry(key, val, list);    // size dose not change???
             } else {
                 lookup.val = val;
             }
@@ -139,6 +139,12 @@ public class ULLMap<K, V>  implements Map61B<K, V> {
     @Override
     public Set<K> keySet() {
         throw new UnsupportedOperationException();
+    }
+
+    public static void main(String[] args) {
+        ULLMap<Integer, String> a = new ULLMap<>();
+        a.put(1, "a");
+        a.put(2, "b");
     }
 
 }
