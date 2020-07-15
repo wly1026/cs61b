@@ -10,7 +10,7 @@ public class PercolationStats {
     public PercolationStats(int N, int T, PercolationFactory pf) {
         this.T = T;
         if (N <= 0 || T <= 0) {
-            throw new java.lang.IndexOutOfBoundsException("N and T should be both > 0");
+            throw new java.lang.IllegalArgumentException("N and T should be both > 0");
         }
         fraction = new double[T];
         for (int i = 0; i < T; i++) {
