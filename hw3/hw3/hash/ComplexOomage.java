@@ -81,10 +81,31 @@ public class ComplexOomage implements Oomage {
     }
 
     public static void main(String[] args) {
-        System.out.println("Drawing 4 random complex Oomages.");
-        randomComplexOomage().draw(0.25, 0.25, 1.5);
-        randomComplexOomage().draw(0.75, 0.75, 1.5);
-        randomComplexOomage().draw(0.25, 0.75, 1.5);
-        randomComplexOomage().draw(0.75, 0.25, 1.5);
+//        System.out.println("Drawing 4 random complex Oomages.");
+//        randomComplexOomage().draw(0.25, 0.25, 1.5);
+//        randomComplexOomage().draw(0.75, 0.75, 1.5);
+//        randomComplexOomage().draw(0.25, 0.75, 1.5);
+//        randomComplexOomage().draw(0.75, 0.25, 1.5);
+
+
+        // TEST
+        List<Oomage> deadlyList = new ArrayList<>();
+        ArrayList<Integer> params = new ArrayList<>();
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        params.add(1);
+        ComplexOomage co = new ComplexOomage(params);
+        System.out.println(co.hashCode());
+
+
     }
 } 

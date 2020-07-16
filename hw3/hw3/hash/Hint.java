@@ -8,5 +8,12 @@ public class Hint {
             System.out.println(i + "th power: " + x);
             x = x * 256;
         }
+
+//        System.out.println("The powers of 126 in Java are:");
+//        int y = 1;
+//        for (int i = 0; i < 35; i += 1) {
+//            System.out.println(i + "th power: " + y);
+//            y = y * 126;
+//        }
     }
 } 
