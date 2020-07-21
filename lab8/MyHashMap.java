@@ -4,8 +4,8 @@ import java.util.Set;
 
 public class MyHashMap<K, V> implements Map61B<K, V> {
     private int m;      // table size
+    private int n;
     private double lf;     // loadFactor;
-    private HashSet<K> keySets;
     private Node<K, V>[] table;
 
     private class Node<K, V> {
@@ -48,7 +48,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap(int initialSize, double loadFactor) {
         m = initialSize;
         lf = loadFactor;
-        keySets = new HashSet();
         table = new Node[m];
     }
 
@@ -56,7 +55,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void clear() {
         m = 16;
         lf = 0.75;
-        keySets.clear();
+        n = 0;
         table = null;
     }
 
@@ -82,7 +81,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     @Override
     public int size() {
-        return keySets.size();
+        return n;
     }
 
     @Override
@@ -93,33 +92,70 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         int i = hash(key);
         if (table[i] == null) {
             table[i] = new Node(key, value, null);
-            keySets.add(key);
+            n++;
         } else if (containsKey(key)) {
             table[i].getNode(key).value = value;
         } else {
             table[i].putNode(key, value);
-            keySets.add(key);
+            n++;
         }
     }
 
     @Override
     public Set<K> keySet() {
+        HashSet<K> keySets = new HashSet<>();
+        for(int i = 0; i < m; i++) {
+            Node h = table[i];
+            while(h != null) {
+                keySets.add((K)h.key);
+                h = h.next;
+            }
+        }
         return keySets;
     }
 
     @Override
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        if (!containsKey(key)) {
+            return null;
+        } else {
+            V returnV = get(key);
+           int i = hash(key);
+
+           Node purposeNode = table[i].getNode(key);
+           if (purposeNode.next != null) {
+               purposeNode.value = purposeNode.next.value;
+               purposeNode.key = purposeNode.next.key;
+               purposeNode.next =purposeNode.next.next;
+           } else {
+               Node lastNode = table[i];
+               Node deleNode = lastNode.next;
+               if (deleNode == null) {
+                   table[i] = null;
+               } else {
+                   while(deleNode.next != null) {
+                       lastNode = lastNode.next;
+                       deleNode = lastNode.next;
+                   }
+                   lastNode.next = null;
+               }
+           }
+           return returnV;
+        }
     }
 
     @Override
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (!containsKey(key) || get(key) != value) {
+            throw new IllegalArgumentException();
+        } else {
+            return remove(key);
+        }
     }
 
     @Override
     public Iterator<K> iterator() {
-        return keySets.iterator();
+        return keySet().iterator();
     }
 
     private int hash(K key) {
@@ -128,12 +164,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     private void resize(int x) {
         MyHashMap<K, V> temp = new MyHashMap<>(x);
-        for(K key : keySets) {
+        for(K key : keySet()) {
             temp.put(key, get(key));
         }
+        this.n = temp.n;
         this.m = temp.m;
         this.table = temp.table;
-        this.keySets = temp.keySets;
     }
 
 //    public static void main(String[] args) {
