@@ -54,19 +54,47 @@ public class ArrayHeapMinPQTest {
 
     public static void main(String[] args) {
         ArrayHeapMinPQ<String> myPQ = new ArrayHeapMinPQ<>();
-        NaiveMinPQ<Character> naivePQ = new NaiveMinPQ<>();
-        int N = 30000;
+        NaiveMinPQ<String> naivePQ = new NaiveMinPQ<>();
+        int N = 100000;
         Random rd = new Random();
+
         Stopwatch sw1 = new Stopwatch();
         for (int i = 0; i < N; i += 1) {
             myPQ.add("mypq"+i, rd.nextInt(100000));
         }
-        System.out.println("Total time elapsed: " + sw1.elapsedTime() +  " seconds.");
+        System.out.println("Add with MyPQ: " + sw1.elapsedTime() +  " seconds.");
 
         Stopwatch sw2 = new Stopwatch();
         for (int i = 0; i < N; i += 1) {
-            myPQ.add("npq"+i, rd.nextInt(100000));
+            naivePQ.add("npq"+i, rd.nextInt(100000));
         }
-        System.out.println("Total time elapsed: " + sw2.elapsedTime() +  " seconds.");
+        System.out.println("Add with NaivePQ: " + sw2.elapsedTime() +  " seconds.");
+
+        Stopwatch sw3 = new Stopwatch();
+        for (int i = 0; i < 1000; i += 1) {
+            int itemNum = rd.nextInt(N);
+            myPQ.changePriority("mypq" + itemNum, rd.nextInt(100000));
+        }
+        System.out.println("ChangePriority with MyPQ: " + sw3.elapsedTime() +  " seconds.");
+
+        Stopwatch sw4 = new Stopwatch();
+        for (int i = 0; i < 1000; i += 1) {
+            int itemNum = rd.nextInt(N);
+            naivePQ.changePriority("npq" + itemNum, rd.nextInt(100000));
+        }
+        System.out.println("ChangePriority with NaivePQ: " + sw4.elapsedTime() +  " seconds.");
+
+        Stopwatch sw5 = new Stopwatch();
+        for (int i = 0; i < 100000; i += 1) {
+            myPQ.removeSmallest();
+        }
+        System.out.println("RemoveSmallest with MyPQ: " + sw5.elapsedTime() +  " seconds.");
+
+        Stopwatch sw6 = new Stopwatch();
+        for (int i = 0; i < 100000; i += 1) {
+            naivePQ.removeSmallest();
+        }
+        System.out.println("RemoveSmallest with NaivePQ: " + sw6.elapsedTime() +  " seconds.");
+
     }
 }

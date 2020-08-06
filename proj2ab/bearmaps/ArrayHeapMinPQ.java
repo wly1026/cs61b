@@ -3,18 +3,19 @@ package bearmaps;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     ArrayList<PriorityNode> nodes;
-    private int n;
+    HashMap<T, Integer> itemIndex;
 
     public ArrayHeapMinPQ() {
         nodes = new ArrayList<>();
+        itemIndex = new HashMap<>();
         nodes.add(0,null);
-        n = 0;
     }
 
     private class PriorityNode {
@@ -43,8 +44,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException(item + "has been added");
         }
         nodes.add(new PriorityNode(item, priority));
-        n++;
-        swim(n);
+        itemIndex.put(item, size()+1);
+        swim(size());
     }
 
     void swim(int i) {
@@ -55,9 +56,9 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     }
 
     void sink(int i) {
-        while (2 * i <= n) {
+        while (2 * i <= size()) {
             int j = 2 * i;
-            if (j < n && nodes.get(j).priority > nodes.get(j + 1).priority) {
+            if (j < size() && nodes.get(j).priority > nodes.get(j + 1).priority) {
                 j = j + 1;
             }
             if (nodes.get(j).priority < nodes.get(i).priority) {
@@ -70,24 +71,23 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     }
 
     private void swap(int x, int y) {
-        T tempItem = nodes.get(x).item;
-        double tempPriority = nodes.get(x).priority;
+        PriorityNode temp = nodes.get(x);
 
-        nodes.get(x).item = nodes.get(y).item;
-        nodes.get(x).priority = nodes.get(y).priority;
+        nodes.set(x, nodes.get(y));
+        nodes.set(y, temp);
 
-        nodes.get(y).item = tempItem;
-        nodes.get(y).priority = tempPriority;
+        itemIndex.put(nodes.get(x).item, x);
+        itemIndex.put(nodes.get(y).item, y);
     }
 
     @Override
     public boolean contains(T item) {
-        return nodes.contains(new PriorityNode(item,0));
+        return itemIndex.containsKey(item);
     }
 
     @Override
     public T getSmallest() {
-        if (n == 0) {
+        if (itemIndex.isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
         return nodes.get(1).item;
@@ -95,20 +95,20 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public T removeSmallest() {
-        if (n == 0) {
+        if (itemIndex.isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
         T returnItem = nodes.get(1).item;
-        swap(1, n);
-        nodes.remove(n);
-        n--;
+        swap(1, size());
+        nodes.remove(size());
+        itemIndex.remove(returnItem);
         sink(1);
         return returnItem;
     }
 
     @Override
     public int size() {
-        return n;
+        return itemIndex.size();
     }
 
     @Override
@@ -116,7 +116,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        int i = nodes.indexOf(new PriorityNode(item, priority));
+        int i = itemIndex.get(item);
         nodes.get(i).priority = priority;
         swim(i);
         sink(i);
