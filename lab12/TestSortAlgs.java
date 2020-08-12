@@ -84,7 +84,6 @@ public class TestSortAlgs {
 
         Queue<Integer> sortedSameItem = MergeSort.mergeSort(createSameItems());
         assertTrue(isSorted(sortedSameItem));
-
     }
 
     /**
