@@ -1,5 +1,7 @@
 import edu.princeton.cs.algs4.Queue;
 
+import java.util.Iterator;
+
 public class MergeSort {
     /**
      * Removes and returns the smallest item that is in q1 or q2.
@@ -43,7 +45,13 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Queue<Item>>
             makeSingleItemQueues(Queue<Item> items) {
         // Your code here!
-        return null;
+        Queue<Queue<Item>> queues = new Queue<>();
+        for (Item item : items) {
+            Queue<Item> i = new Queue<>();
+            i.enqueue(item);
+            queues.enqueue(i);
+        }
+        return queues;
     }
 
     /**
@@ -61,8 +69,11 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> msq = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            msq.enqueue(getMin(q1, q2));
+        }
+        return msq;
     }
 
     /**
@@ -77,7 +88,19 @@ public class MergeSort {
      */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        Queue<Queue<Item>> queues= makeSingleItemQueues(items);
+        Queue<Queue<Item>> aux = new Queue<>();
+        while (queues.size() > 1) {
+            for (int i = 0; i < queues.size() - 1; i += 2) {
+                Queue<Item> q1 = queues.dequeue();
+                Queue<Item> q2 = queues.dequeue();
+                aux.enqueue(mergeSortedQueues(q1, q2));
+            }
+            if (!queues.isEmpty()) {
+                aux.enqueue(queues.dequeue());
+            }
+            queues = aux;
+        }
+        return queues.dequeue();
     }
 }
