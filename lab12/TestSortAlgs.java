@@ -77,9 +77,6 @@ public class TestSortAlgs {
         assertTrue(isSorted(sortedTas));
 
         Queue<String> sortedtasils = MergeSort.mergeSort(createIncreaseLengthStringQueue());
-        for (String i : sortedtasils) {
-            System.out.println(i);
-        }
         assertTrue(isSorted(sortedtasils));
 
         Queue<Integer> sortedTai = MergeSort.mergeSort(createIntQueue());
