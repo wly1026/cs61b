@@ -82,7 +82,7 @@ public class QuickSort {
             Queue<Item> equal = new Queue<>();
             Queue<Item> greater = new Queue<>();
             partition(items, getRandomItem(items), less, equal, greater);
-            items = catenate(catenate(quickSort(less), equal), greater);
+            items = catenate(catenate(quickSort(less), equal), quickSort(greater));
         }
         return items;
     }

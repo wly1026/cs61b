@@ -14,12 +14,46 @@ public class TestSortAlgs {
         return tas;
     }
 
+    public Queue<String> createIncreaseLengthStringQueue() {
+        Queue<String> tasils = new Queue<>();
+        tasils.enqueue("Joe");
+        tasils.enqueue("Omar");
+        tasils.enqueue("Itai");
+        tasils.enqueue("");
+        tasils.enqueue("Apple");
+        tasils.enqueue("Cocacola");
+        return tasils;
+    }
+
     public Queue<Integer> createIntQueue() {
         Queue<Integer> tai = new Queue<>();
         tai.enqueue(10);
         tai.enqueue(1);
         tai.enqueue(12);
         return tai;
+    }
+
+    public Queue<Integer> createSameItems() {
+        Queue<Integer> sameItem = new Queue<>();
+        for (int i = 0; i <10; i++) {
+            sameItem.enqueue(10);
+        }
+        return sameItem;
+    }
+
+    public Queue<Integer> createIntQueueGradeScope() {
+        Queue<Integer> t = new Queue<>();
+        t.enqueue(0);
+        t.enqueue(0);
+        t.enqueue(2);
+        t.enqueue(8);
+        t.enqueue(4);
+        t.enqueue(8);
+        t.enqueue(3);
+        t.enqueue(9);
+        t.enqueue(4);
+        t.enqueue(5);
+        return t;
     }
 
     @Test
@@ -32,6 +66,9 @@ public class TestSortAlgs {
 
         Queue<Integer> sortedTaiAgain = QuickSort.quickSort(sortedTai);
         assertTrue(isSorted(sortedTaiAgain));
+
+        Queue<Integer> sortedT = QuickSort.quickSort(createIntQueueGradeScope());
+        assertTrue(isSorted(sortedT));
     }
 
     @Test
@@ -39,8 +76,18 @@ public class TestSortAlgs {
         Queue<String> sortedTas = MergeSort.mergeSort(createStringQueue());
         assertTrue(isSorted(sortedTas));
 
+        Queue<String> sortedtasils = MergeSort.mergeSort(createIncreaseLengthStringQueue());
+        for (String i : sortedtasils) {
+            System.out.println(i);
+        }
+        assertTrue(isSorted(sortedtasils));
+
         Queue<Integer> sortedTai = MergeSort.mergeSort(createIntQueue());
         assertTrue(isSorted(sortedTai));
+
+        Queue<Integer> sortedSameItem = MergeSort.mergeSort(createSameItems());
+        assertTrue(isSorted(sortedSameItem));
+
     }
 
     /**
