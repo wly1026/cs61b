@@ -4,6 +4,8 @@ import edu.princeton.cs.algs4.Stopwatch;
 
 import java.util.List;
 
+import static java.util.List.*;
+
 /**
  * Very basic syntatically correct but semantically incorrect shortest paths solver.
  * It tries the first edge it sees and if that edge doesn't work, it gives up
@@ -22,7 +24,9 @@ public class LazySolver<Vertex> implements ShortestPathsSolver<Vertex> {
         List<WeightedEdge<Vertex>> neighborEdges = G.neighbors(start);
         for (WeightedEdge<Vertex> e : neighborEdges) {
             if (e.to().equals(goal)) {
-                solution = List.of(start, goal);
+                solution.add(start);
+                solution.add(goal);
+                //solution = of(start, goal);
                 solutionWeight = e.weight();
                 outcome = SolverOutcome.SOLVED;
                 timeSpent = sw.elapsedTime();
