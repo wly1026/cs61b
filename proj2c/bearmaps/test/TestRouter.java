@@ -82,4 +82,10 @@ public class TestRouter {
         }
         return expected;
     }
+
+    @Test
+    public void Nulltest() {
+        System.out.println(graph.neighbors(4422378273L) != null);
+        System.out.println(graph.neighbors(92721185L) != null);
+    }
 }

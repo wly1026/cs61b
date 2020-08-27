@@ -1,8 +1,12 @@
 package bearmaps.proj2c;
 
+import bearmaps.hw4.WeightedEdge;
 import bearmaps.hw4.streetmap.Node;
 import bearmaps.hw4.streetmap.StreetMapGraph;
 import bearmaps.proj2ab.Point;
+import bearmaps.proj2ab.PointSet;
+import bearmaps.proj2ab.WeirdPointSet;
+import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
 
 import java.util.*;
 
@@ -14,13 +18,24 @@ import java.util.*;
  * @author Alan Yao, Josh Hug, ________
  */
 public class AugmentedStreetMapGraph extends StreetMapGraph {
+    PointSet ps;
+    Map<Point, Node> pn;
 
     public AugmentedStreetMapGraph(String dbPath) {
         super(dbPath);
         // You might find it helpful to uncomment the line below:
-        // List<Node> nodes = this.getNodes();
+        List<Node> nodes = this.getNodes();
+        List<Point> points = new ArrayList<>();
+        pn = new HashMap<>();
+        for (Node n: nodes){
+            if (!neighbors(n.id()).isEmpty()) {
+                Point p = new Point(n.lon(), n.lat());
+                points.add(p);
+                pn.put(p, n);
+            }
+        }
+        ps = new WeirdPointSet(points);
     }
-
 
     /**
      * For Project Part II
@@ -30,9 +45,9 @@ public class AugmentedStreetMapGraph extends StreetMapGraph {
      * @return The id of the node in the graph closest to the target.
      */
     public long closest(double lon, double lat) {
-        return 0;
+        Point p = ps.nearest(lon, lat);
+        return pn.get(p).id();
     }
-
 
     /**
      * For Project Part III (gold points)
